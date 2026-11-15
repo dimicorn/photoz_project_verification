@@ -7,3 +7,5 @@
 | верификатор работает | 3 | приведение повтора id, invariance, k=1 к METHOD (этап 2в) | FAIL test_row_order_preserved, ERROR test_self_prediction_k1, остальное PASS | 3 из 3 |
 | id в predictions | 1 | test_row_order_preserved на коде ДЗ 1 | FAIL: id округлены (float64) | 1 из 1 |
 | k=1 | 1 | test_self_prediction_k1 на коде ДЗ 1 | ERROR AxisError | 1 из 1 |
+| исправление src/ | 1 | id строками, nn[:, None] при k=1 | результат шага 2 | — |
+| внесённая ошибка FEATS | 1 | slice(6, 11) в ветке inject-feats | test_predictions_match_independent_knn, test_knn_is_mean_not_median | — |
