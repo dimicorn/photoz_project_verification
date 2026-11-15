@@ -9,3 +9,4 @@
 | k=1 | 1 | test_self_prediction_k1 на коде ДЗ 1 | ERROR AxisError | 1 из 1 |
 | исправление src/ | 1 | id строками, nn[:, None] при k=1 | результат шага 2 | — |
 | внесённая ошибка FEATS | 1 | slice(6, 11) в ветке inject-feats | test_predictions_match_independent_knn, test_knn_is_mean_not_median | — |
+| эксперимент на неопределённость | 1 | experiments/uncertainty.py: бутстреп по галактикам, подвыборки 80% A, базовые линии, гипотеза Δσ_NMAD | 117 строк CSV, MD с 3 таблицами, воспроизводимость побайтно, 128с | — |
