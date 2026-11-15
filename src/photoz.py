@@ -24,10 +24,17 @@ def load(name: str) -> np.ndarray:
     return np.loadtxt(RAW / f"happy_{name}.txt", comments="#")
 
 
+def load_ids(name: str) -> np.ndarray:
+    """Загрузить id как строки."""
+    return np.loadtxt(RAW / f"happy_{name}.txt", dtype=str, usecols=0, comments="#")
+
+
 def predict_knn(train: np.ndarray, test: np.ndarray, k: int = K) -> np.ndarray:
     """kNN photo-z: среднее z_spec k ближайших соседей."""
     tree = cKDTree(train[:, FEATS])
     _, nn = tree.query(test[:, FEATS], k=k)
+    if nn.ndim == 1:
+        nn = nn[:, np.newaxis]
     return train[nn, ZCOL].mean(axis=1)
 
 
@@ -42,14 +49,14 @@ def metrics(zp: np.ndarray, zs: np.ndarray) -> dict:
     }
 
 
-def save_predictions(name: str, data: np.ndarray, z_phot: np.ndarray) -> None:
+def save_predictions(name: str, ids: np.ndarray, data: np.ndarray, z_phot: np.ndarray) -> None:
     """Сохранить id, z_spec, z_phot."""
     path = RES / f"predictions_{name}.csv"
     with open(path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["id", "z_spec", "z_phot"])
         for i in range(len(data)):
-            w.writerow([int(data[i, 0]), data[i, ZCOL], z_phot[i]])
+            w.writerow([ids[i], data[i, ZCOL], z_phot[i]])
 
 
 def save_metrics(sample: str, n: int, k: int, m: dict) -> None:
@@ -71,10 +78,11 @@ def main():
     for name in ["B", "C", "D"]:
         print(f"\nОбработка {name}...")
         data = load(name)
+        ids = load_ids(name)
         print(f"  {len(data)} галактик")
 
         z_phot = predict_knn(train, data, K)
-        save_predictions(name, data, z_phot)
+        save_predictions(name, ids, data, z_phot)
 
         zs = data[:, ZCOL]
         m = metrics(z_phot, zs)
