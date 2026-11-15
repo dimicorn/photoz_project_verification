@@ -26,12 +26,11 @@ Happy A, зависит от того, насколько проверочная
 ## 1.1. Верификатор ДЗ 2 (свойства kNN photo-z)
 
 ```
-.venv/bin/python checks_hw2/test_photoz_properties.py && \
-.venv/bin/python checks_hw2/test_data_contract.py && \
-.venv/bin/python checks_hw2/test_metrics_consistency.py
+.venv/bin/python -m checks_hw2
 ```
 
-22 теста: 7 свойств + 9 договора + 6 согласованности. Код 0 — принято.
+Эксперимент на неопределённость: `.venv/bin/python experiments/uncertainty.py`.
+`checks_hw2/` агенту не менять.
 
 ## 2. Карта проекта и источники
 
