@@ -1,0 +1,71 @@
+=== Запуск src/photoz.py ===
+src/photoz.py OK
+
+=== контракт: test_data_contract.py ===
+8062, 27.5865]
+  INFO: C mag_r ∈ [13.9238, 22.6825]
+  INFO: D mag_r ∈ [8.5103, 30.4811]
+  PASS: mag_r info
+  INFO: A u-g ∈ [-7.8834, 16.4220]
+  INFO: A g-r ∈ [-10.5016, 11.0176]
+  INFO: A r-i ∈ [-7.4699, 10.7678]
+  INFO: A i-z ∈ [-15.8161, 12.4310]
+  INFO: B u-g ∈ [-5.9688, 10.8785]
+  INFO: B g-r ∈ [-7.1856, 10.3343]
+  INFO: B r-i ∈ [-12.4841, 11.2626]
+  INFO: B i-z ∈ [-12.2586, 13.1825]
+  INFO: C u-g ∈ [-4.4339, 10.2887]
+  INFO: C g-r ∈ [-1.4776, 5.5323]
+  INFO: C r-i ∈ [-12.1547, 3.1097]
+  INFO: C i-z ∈ [-10.6564, 12.9584]
+  INFO: D u-g ∈ [-14.8903, 13.1777]
+  INFO: D g-r ∈ [-4.2068, 15.3927]
+  INFO: D r-i ∈ [-15.9660, 14.8846]
+  INFO: D i-z ∈ [-12.2576, 14.5728]
+  PASS: цвета info
+  PASS: z_spec ∈ [0, 5]
+  INFO: A feat1 ∈ [-4.8646, 5.3452]
+  INFO: A feat2 ∈ [-8.6158, 12.9182]
+  INFO: A feat3 ∈ [-22.6149, 18.5444]
+  INFO: A feat4 ∈ [-25.0072, 30.9142]
+  INFO: A feat5 ∈ [-66.1694, 49.3829]
+  INFO: B feat1 ∈ [-5.4026, 5.1419]
+  INFO: B feat2 ∈ [-6.9195, 8.0068]
+  INFO: B feat3 ∈ [-16.2724, 17.2375]
+  INFO: B feat4 ∈ [-40.3823, 32.4316]
+  INFO: B feat5 ∈ [-51.6167, 52.4569]
+  INFO: C feat1 ∈ [-2.9606, 2.2337]
+  INFO: C feat2 ∈ [-5.5596, 7.4843]
+  INFO: C feat3 ∈ [-5.3549, 8.0528]
+  INFO: C feat4 ∈ [-39.3720, 7.4325]
+  INFO: C feat5 ∈ [-45.0625, 51.5402]
+  INFO: D feat1 ∈ [-6.1711, 6.8586]
+  INFO: D feat2 ∈ [-14.8238, 10.0438]
+  INFO: D feat3 ∈ [-10.5750, 26.9125]
+  INFO: D feat4 ∈ [-51.0586, 43.5374]
+  INFO: D feat5 ∈ [-51.6128, 58.1442]
+  PASS: feat info
+
+10 passed, 2 failed
+
+
+=== свойства: test_photoz_properties.py ===
+
+
+=== метрики: test_metrics_consistency.py ===
+  PASS: метрики совпадают с predictions
+  INFO: B sigma_nmad = 0.021616
+  INFO: C sigma_nmad = 0.052942
+  INFO: D sigma_nmad = 0.083006
+  PASS: sigma_nmad info
+  INFO: B bias = 0.000403
+  INFO: C bias = 0.002844
+  INFO: D bias = -0.011154
+  PASS: bias info
+  PASS: outlier_frac согласован
+  PASS: n и k совпадают
+
+5 passed, 0 failed
+
+
+контракт: 1, свойства: -9, метрики: 0 — НЕ ПРИНЯТО

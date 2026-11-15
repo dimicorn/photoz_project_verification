@@ -1,0 +1,64 @@
+=== Запуск src/photoz.py ===
+src/photoz.py OK
+
+=== контракт: test_data_contract.py ===
+  PASS: заголовок
+  PASS: число строк
+  FAIL: число столбцов: A: 11 столбцов, ожидаем 12
+  PASS: id — 18–19 цифр
+  ERROR: повтор id допустим: index 11 is out of bounds for axis 1 with size 11
+  ERROR: A ∩ B,C,D = 0: check_A_not_in_BCD() takes 0 positional arguments but 1 was given
+  ERROR: C ∩ D: check_C_D_intersection() takes 0 positional arguments but 1 was given
+  PASS: нет NaN и inf
+  INFO: A mag_r ∈ [-7.8834, 16.4220]
+  INFO: B mag_r ∈ [-5.9688, 10.8785]
+  INFO: C mag_r ∈ [-4.4339, 10.2887]
+  INFO: D mag_r ∈ [-14.8903, 13.1777]
+  PASS: mag_r info
+  INFO: A u-g ∈ [-10.5016, 11.0176]
+  INFO: A g-r ∈ [-7.4699, 10.7678]
+  INFO: A r-i ∈ [-15.8161, 12.4310]
+  INFO: A i-z ∈ [0.0000, 1.4720]
+  INFO: B u-g ∈ [-7.1856, 10.3343]
+  INFO: B g-r ∈ [-12.4841, 11.2626]
+  INFO: B r-i ∈ [-12.2586, 13.1825]
+  INFO: B i-z ∈ [0.0000, 1.5915]
+  INFO: C u-g ∈ [-1.4776, 5.5323]
+  INFO: C g-r ∈ [-12.1547, 3.1097]
+  INFO: C r-i ∈ [-10.6564, 12.9584]
+  INFO: C i-z ∈ [0.0000, 3.5980]
+  INFO: D u-g ∈ [-4.2068, 15.3927]
+  INFO: D g-r ∈ [-15.9660, 14.8846]
+  INFO: D r-i ∈ [-12.2576, 14.5728]
+  INFO: D i-z ∈ [0.0000, 4.3953]
+  PASS: цвета info
+  FAIL: z_spec ∈ [0, 5]: A: есть z_spec < 0
+  INFO: A feat1 ∈ [-8.6158, 12.9182]
+  INFO: A feat2 ∈ [-22.6149, 18.5444]
+  INFO: A feat3 ∈ [-25.0072, 30.9142]
+  INFO: A feat4 ∈ [-66.1694, 49.3829]
+  ERROR: feat info: index 11 is out of bounds for axis 1 with size 11
+
+6 passed, 6 failed
+
+
+=== свойства: test_photoz_properties.py ===
+
+
+=== метрики: test_metrics_consistency.py ===
+  PASS: метрики совпадают с predictions
+  INFO: B sigma_nmad = 0.021616
+  INFO: C sigma_nmad = 0.052942
+  INFO: D sigma_nmad = 0.083006
+  PASS: sigma_nmad info
+  INFO: B bias = 0.000403
+  INFO: C bias = 0.002844
+  INFO: D bias = -0.011154
+  PASS: bias info
+  PASS: outlier_frac согласован
+  PASS: n и k совпадают
+
+5 passed, 0 failed
+
+
+контракт: 1, свойства: -9, метрики: 0 — НЕ ПРИНЯТО
