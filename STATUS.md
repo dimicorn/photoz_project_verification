@@ -25,13 +25,11 @@ reports/Качество photo-z при смещении выборки.md.
 
 ## ДЗ 2: Верификатор
 
-22 теста: 7 свойств kNN + 9 договора данных + 6 согласованности метрик.
-Все прошли: `checks_hw2/test_photoz_properties.py` (7/7),
-`checks_hw2/test_data_contract.py` (9/9),
-`checks_hw2/test_metrics_consistency.py` (6/6).
-
-Поймана ошибка: сдвиг FEATS с `slice(7, 12)` на `slice(6, 11)` — 3 теста ловят.
-Результаты «до» и «после» — `results/caught_error_before.txt`, `results/caught_error_after.txt`.
+Команда: `.venv/bin/python -m checks_hw2` — код 0 (договор, 9 свойств, метрики; ≈ 17 с).
+Пойманы 2 настоящие ошибки `src/photoz.py` (id в float64, сбой при k = 1) и внесённая
+(`FEATS = slice(6, 11)`, ветка `inject-feats`): `results/real_error_*.txt`, `results/inject_feats.txt`.
+Эксперимент `experiments/uncertainty.py`: все 5 сравнений подтверждены (Холм, порог 0,005) —
+`results/uncertainty.md`. Отчёт — `REPORT_HW2.md`. Метка `hw2` ещё на попытке 1 (`7285bf1`).
 
 ## Проверки и ограничения
 

@@ -113,13 +113,21 @@ def baseline_k1(train, test_data, seed, n_boot):
     }
 
 
-def paired_bootstrap_k10_vs_k1(train, test_data, seed, n_boot):
-    """Парный бутстреп: k=10 vs k=1 на одних и тех же индексах test_data."""
+def sigma_nmad(dz):
+    return float(1.4826 * np.median(np.abs(dz - np.median(dz))))
+
+
+def bootstrap_p(deltas):
+    """Двусторонний бутстреп-p: 2·min(доля Δ≤0, доля Δ≥0)."""
+    return min(1.0, 2.0 * min(float(np.mean(deltas <= 0)), float(np.mean(deltas >= 0))))
+
+
+def paired_bootstrap(z_a, z_b, zs, seed, n_boot):
+    """Парный бутстреп Δσ_NMAD = σ(a) − σ(b) на одних и тех же индексах галактик."""
     rng = np.random.default_rng(seed)
-    n = len(test_data)
-    z_phot10 = predict_knn(train, test_data, k=10)
-    z_phot1 = predict_knn(train, test_data, k=1)
-    zs = test_data[:, 6]
+    n = len(zs)
+    dz_a = (z_a - zs) / (1 + zs)
+    dz_b = (z_b - zs) / (1 + zs)
 
     diffs = []
     for chunk_start in range(0, n_boot, BOOT_CHUNK):
@@ -127,32 +135,33 @@ def paired_bootstrap_k10_vs_k1(train, test_data, seed, n_boot):
         indices = rng.integers(0, n, size=(chunk_size, n))
         for i in range(chunk_size):
             idx = indices[i]
-            dz10 = (z_phot10[idx] - zs[idx]) / (1 + zs[idx])
-            dz1 = (z_phot1[idx] - zs[idx]) / (1 + zs[idx])
-            s10 = float(1.4826 * np.median(np.abs(dz10 - np.median(dz10))))
-            s1 = float(1.4826 * np.median(np.abs(dz1 - np.median(dz1))))
-            diffs.append(s10 - s1)
+            diffs.append(sigma_nmad(dz_a[idx]) - sigma_nmad(dz_b[idx]))
 
     diffs = np.array(diffs)
     return {
         "delta_median": float(np.median(diffs)),
         "delta_low": float(np.percentile(diffs, 2.5)),
         "delta_high": float(np.percentile(diffs, 97.5)),
+        "p": bootstrap_p(diffs),
     }
 
 
-def holm_correction(p_values, alpha=0.05):
-    """Поправка Холма для списка p-значений."""
-    p_sorted = np.sort(p_values)
-    m = len(p_sorted)
-    for i, p in enumerate(p_sorted):
-        p_sorted[i] = min(p * (m - i), 1.0)
-    # вернуть в исходном порядке
-    p_adj = np.zeros_like(p_values)
-    idx = np.argsort(np.argsort(p_values))
-    for i in range(m):
-        p_adj[idx[i]] = p_sorted[i]
+def holm_correction(p_values):
+    """Поправка Холма (step-down): p_(i) · (m − i), с монотонностью, не больше 1."""
+    p_values = np.asarray(p_values, dtype=float)
+    m = len(p_values)
+    order = np.argsort(p_values, kind="stable")
+    p_adj = np.empty(m)
+    running = 0.0
+    for rank, j in enumerate(order):
+        running = max(running, min(1.0, p_values[j] * (m - rank)))
+        p_adj[j] = running
     return p_adj
+
+
+def fmt_p(p, floor):
+    """p = 0 при конечном числе повторов печатается как «< floor»."""
+    return f"< {floor:g}" if p == 0 else f"{p:.4f}"
 
 
 def main():
@@ -302,17 +311,35 @@ def main():
         "high": k1_b["sigma_high"],
     })
 
-    paired = paired_bootstrap_k10_vs_k1(train, test["B"], seed=0, n_boot=n_boot)
-    print(f"  Δσ_NMAD (k=10 − k=1): {paired['delta_median']:.6f} [{paired['delta_low']:.6f}, {paired['delta_high']:.6f}]")
-    csv_rows.append({
-        "variant": "paired_k10_vs_k1",
-        "sample": "B",
-        "metric": "delta_sigma_nmad",
-        "seed": 0,
-        "estimate": paired["delta_median"],
-        "low": paired["delta_low"],
-        "high": paired["delta_high"],
-    })
+    # Парные сравнения k=10 с базовыми линиями (одни и те же индексы галактик B, seed 0)
+    zs_B = test["B"][:, 6]
+    z10_B = predict_knn(train, test["B"], k=10)
+    z1_B = predict_knn(train, test["B"], k=1)
+    zconst_B = np.full(len(zs_B), float(np.median(train[:, 6])))
+    comparisons = []
+    for label, variant, z_other in [
+        ("k=10 − константа (B)", "paired_k10_vs_const", zconst_B),
+        ("k=10 − k=1 (B)", "paired_k10_vs_k1", z1_B),
+    ]:
+        pr = paired_bootstrap(z10_B, z_other, zs_B, seed=0, n_boot=n_boot)
+        print(f"  Δσ_NMAD ({label}): {pr['delta_median']:.6f} [{pr['delta_low']:.6f}, {pr['delta_high']:.6f}]")
+        comparisons.append({
+            "pair": label,
+            "kind": "парный",
+            "delta": pr["delta_median"],
+            "low": pr["delta_low"],
+            "high": pr["delta_high"],
+            "p": pr["p"],
+        })
+        csv_rows.append({
+            "variant": variant,
+            "sample": "B",
+            "metric": "delta_sigma_nmad",
+            "seed": 0,
+            "estimate": pr["delta_median"],
+            "low": pr["delta_low"],
+            "high": pr["delta_high"],
+        })
 
     # ===== 4. Гипотеза: Δσ_NMAD C−B, D−B, D−C =====
     print("\n[4] Гипотеза: Δσ_NMAD (независимый бутстреп)...")
@@ -325,7 +352,6 @@ def main():
     dz_D = (z_phot_D - test["D"][:, 6]) / (1 + test["D"][:, 6])
 
     pairs = [("C", "B", dz_C, dz_B), ("D", "B", dz_D, dz_B), ("D", "C", dz_D, dz_C)]
-    comparisons = []
     for name1, name2, dz1, dz2 in pairs:
         rng = np.random.default_rng(0)
         n1, n2 = len(dz1), len(dz2)
@@ -342,19 +368,17 @@ def main():
         delta_median = float(np.median(deltas))
         delta_low = float(np.percentile(deltas, 2.5))
         delta_high = float(np.percentile(deltas, 97.5))
-        # p-value: p = 2·min(доля ≤0, доля ≥0)
-        frac_le0 = float(np.mean(deltas <= 0))
-        frac_ge0 = float(np.mean(deltas >= 0))
-        p_val = 2.0 * min(frac_le0, frac_ge0)
+        p_val = bootstrap_p(deltas)
 
         comparisons.append({
             "pair": f"{name1}−{name2}",
+            "kind": "независимый",
             "delta": delta_median,
             "low": delta_low,
             "high": delta_high,
             "p": p_val,
         })
-        print(f"  {name1}−{name2}: Δ={delta_median:.6f} [{delta_low:.6f}, {delta_high:.6f}], p={p_val:.4f}")
+        print(f"  {name1}−{name2}: Δ={delta_median:.6f} [{delta_low:.6f}, {delta_high:.6f}], p={fmt_p(p_val, 1 / n_boot)}")
         csv_rows.append({
             "variant": "hypothesis_delta",
             "sample": f"{name1}-{name2}",
@@ -365,12 +389,13 @@ def main():
             "high": delta_high,
         })
 
-    # Поправка Холма
+    # Поправка Холма на все 5 сравнений (2 с базовыми линиями + 3 гипотезы), METHOD «Пересмотр 1 г»
     p_vals = np.array([c["p"] for c in comparisons])
     p_holm = holm_correction(p_vals)
     for c, ph in zip(comparisons, p_holm):
         c["p_holm"] = ph
-        practical = abs(c["delta"]) > 0.005
+        # практический порог: весь 95%-интервал Δ дальше 0.005 от нуля
+        practical = c["low"] > 0.005 or c["high"] < -0.005
         significant = ph < 0.05
         if significant and practical:
             c["verdict"] = "подтверждено"
@@ -378,6 +403,19 @@ def main():
             c["verdict"] = "значимо, практически мало"
         else:
             c["verdict"] = "не подтверждено"
+
+    # Точечные оценки k=10 на всей A (должны совпасть с results/metrics.csv)
+    point = {name: metrics(predict_knn(train, test[name], k=10), test[name][:, 6]) for name in SAMPLES}
+    for name in SAMPLES:
+        csv_rows.append({
+            "variant": "point_k10_full_A",
+            "sample": name,
+            "metric": "sigma_nmad",
+            "seed": "",
+            "estimate": point[name]["sigma_nmad"],
+            "low": "",
+            "high": "",
+        })
 
     # ===== Запись CSV =====
     csv_path = RES / "uncertainty.csv"
@@ -394,25 +432,27 @@ def main():
         f.write("# Результаты эксперимента на неопределённость\n\n")
 
         # Таблица 1: вариант — σ_NMAD — σ по 5 подвыборкам — 95%-интервал — вывод
-        f.write("## Таблица 1: σ_NMAD по подвыборкам и бутстрепу\n\n")
-        f.write("| вариант | σ_NMAD | σ по 5 подвыборкам | 95%-интервал | вывод |\n")
+        f.write("## Таблица 1: σ_NMAD, kNN k=10\n\n")
+        f.write("σ_NMAD — точечная оценка, обучение на всей A (совпадает с results/metrics.csv); "
+                "подвыборки — 5 × 80% A (seed 0–4); интервал — бутстреп по галактикам, seed 0.\n\n")
+        f.write("| выборка | σ_NMAD | среднее ± σ по 5 подвыборкам | 95%-интервал | устойчивость между seed 0–4 |\n")
         f.write("|---|---|---|---|---|\n")
         for name in SAMPLES:
-            # σ по подвыборкам
             ss = subsample_summary[name]
-            subsample_str = f"{ss['sigma_std']:.6f}"
-            # 95% интервал из galaxy_bootstrap seed 0
             iv = galaxy_intervals[name]["sigma_nmad"]
-            interval_str = f"[{iv['low']:.6f}, {iv['high']:.6f}]"
-            # Вывод: совпадают ли концы интервалов между seeds?
             stability_name = "устойчив" if stability_ok else "неустойчив"
-            f.write(f"| {name} | {ss['sigma_mean']:.6f} | ±{subsample_str} | {interval_str} | {stability_name} |\n")
+            f.write(f"| {name} | {point[name]['sigma_nmad']:.6f} | {ss['sigma_mean']:.6f} ± {ss['sigma_std']:.6f} | "
+                    f"[{iv['low']:.6f}, {iv['high']:.6f}] | {stability_name} |\n")
 
-        f.write("\n## Таблица 2: Сравнения Δσ_NMAD\n\n")
-        f.write("| пара | Δ | 95%-интервал | p | p_Холм | вердикт |\n")
-        f.write("|---|---|---|---|---|---|\n")
+        f.write(f"\n## Таблица 2: Сравнения Δσ_NMAD ({len(comparisons)} сравнений, поправка Холма на все)\n\n")
+        f.write("Правило: подтверждено, если p_Холм < 0.05 и весь 95%-интервал Δ дальше 0.005 от нуля. "
+                f"p = 0 при {n_boot} повторах записано как «< {1 / n_boot:g}».\n\n")
+        f.write("| сравнение | бутстреп | Δ | 95%-интервал | p | p_Холм | вердикт |\n")
+        f.write("|---|---|---|---|---|---|---|\n")
+        m_cmp = len(comparisons)
         for c in comparisons:
-            f.write(f"| {c['pair']} | {c['delta']:.6f} | [{c['low']:.6f}, {c['high']:.6f}] | {c['p']:.4f} | {c['p_holm']:.4f} | {c['verdict']} |\n")
+            f.write(f"| {c['pair']} | {c['kind']} | {c['delta']:.6f} | [{c['low']:.6f}, {c['high']:.6f}] | "
+                    f"{fmt_p(c['p'], 1 / n_boot)} | {fmt_p(c['p_holm'], m_cmp / n_boot)} | {c['verdict']} |\n")
 
         f.write("\n## Проверка устойчивости концов интервала σ_NMAD (seeds 0–4)\n\n")
         if stability_ok:
@@ -421,12 +461,12 @@ def main():
             f.write("Расхождение > 0.001 → **неустойчиво**, увеличено n_boot до 5000.\n")
 
         f.write("\n## Базовые линии на B\n\n")
-        f.write(f"| метод | σ_NMAD |\n")
-        f.write(f"|---|---|\n")
-        f.write(f"| k=1 (полные данные) | {k1_b['sigma_full']:.6f} |\n")
-        f.write(f"| k=1 | {k1_b['sigma_nmad']:.6f} [{k1_b['sigma_low']:.6f}, {k1_b['sigma_high']:.6f}] |\n")
-        f.write(f"| константа (медиана z_spec A) | {const_b['sigma_nmad']:.6f} |\n")
-        f.write(f"| Δ(k=10 − k=1) | {paired['delta_median']:.6f} [{paired['delta_low']:.6f}, {paired['delta_high']:.6f}] |\n")
+        f.write("| метод | σ_NMAD | 95%-интервал (seed 0) |\n")
+        f.write("|---|---|---|\n")
+        f.write(f"| kNN k=10 | {point['B']['sigma_nmad']:.6f} | [{galaxy_intervals['B']['sigma_nmad']['low']:.6f}, "
+                f"{galaxy_intervals['B']['sigma_nmad']['high']:.6f}] |\n")
+        f.write(f"| kNN k=1 | {k1_b['sigma_full']:.6f} | [{k1_b['sigma_low']:.6f}, {k1_b['sigma_high']:.6f}] |\n")
+        f.write(f"| константа (медиана z_spec A) | {const_b['sigma_nmad']:.6f} | — |\n")
 
     print(f"Записано {md_path}")
     print("Готово.")
