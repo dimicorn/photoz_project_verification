@@ -13,7 +13,7 @@ RES = ROOT / "results"
 RES.mkdir(exist_ok=True)
 
 K = 10
-FEATS = slice(7, 12)  # feat1..feat5
+FEATS = slice(6, 11)  # feat1..feat5
 ZCOL = 6              # z_spec
 
 all_metrics: dict = {}
