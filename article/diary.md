@@ -37,3 +37,25 @@
 - Создан `article/experiment/plot.py`: matplotlib, 3 панели z_phot vs z_spec для B,C,D (hist2d scatter, 20000 точек, seed=0), линия y=x, полосы ±0.15(1+z). Сохранён в `article/paper/figures/zphot_zspec.pdf`.
 - Проверка: `git diff --stat results/` — только `run_log.md` (не metrics.csv), metrics.csv совпадает с git.
 - `checks_hw2` — rc=0.
+
+## 2026-11-22 — текст статьи и вычитка
+
+- Запрос: этап 6 — вычитка и подготовка к подаче.
+- Сделано: вычитан `article/paper/paper.tex`; исправлены две неточности —
+  команды воспроизводимости приведены к `.venv/bin/python` (было `python`),
+  из раздела Experiment убрано «beyond the margin of the acceptance rule»
+  (правило приёмки — строгий порядок, запаса оно не задаёт).
+- Проверено:
+  - числа результатов вне макросов `results.tex` — нет; `grep -nE '[0-9]\.[0-9]{2}'`
+    по телу даёт только константы определений (1,4826 в σ_NMAD и порог 0,15);
+  - `dimicorn`, `github`, `/Users`, имена авторов — 0 вхождений в `paper.tex` и в PDF;
+  - `pdfinfo paper.pdf | grep Author` — пусто; `Pages: 4`;
+  - объём основного текста: стр. 1–3 плюс ~55 % стр. 4 до «Use of AI assistants»,
+    то есть ≈3,5 стр. — в границах 2–4;
+  - утверждения сверены с фактами: 24 теста верификатора (24 строки PASS),
+    9 свойств оценщика, 5 bootstrap-сидов (0–4), концы интервалов совпадают
+    до третьего знака; baseline-константа на B 0,1916 = Σ_B + ΔConstBabs;
+  - `tectonic -X compile paper.tex` — rc=0;
+  - `.venv/bin/python -m checks_hw2` — rc=0;
+  - `.venv/bin/python article/checks/check_paper.py` — rc=0, 26 из 26.
+- Итог: версия для подачи зафиксирована тегом `paper-submitted`.

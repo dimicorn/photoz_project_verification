@@ -85,5 +85,38 @@ for sample, label in [("B", "B"), ("C", "C"), ("D", "D")]:
     lines.append(rf"\newcommand{{\Out{label}lo}}{{{fmt1pct(lo)}}}")
     lines.append(rf"\newcommand{{\Out{label}hi}}{{{fmt1pct(hi)}}}")
 
+lines.append("")
+
+# --- Разности sigma_nmad с 95%-интервалами ---
+# hypothesis_delta: C-B, D-B, D-C (независимый бутстреп);
+# paired_k10_vs_k1 и paired_k10_vs_const: парный бутстреп на B.
+delta = {}
+with open(UNCERT) as f:
+    for r in csv.DictReader(f):
+        if r["metric"] != "delta_sigma_nmad" or r["seed"] != "0":
+            continue
+        delta[(r["variant"], r["sample"])] = (
+            float(r["estimate"]), float(r["low"]), float(r["high"]))
+
+DELTAS = [
+    (("hypothesis_delta", "C-B"), "DeltaCB"),
+    (("hypothesis_delta", "D-B"), "DeltaDB"),
+    (("hypothesis_delta", "D-C"), "DeltaDC"),
+    (("paired_k10_vs_k1", "B"), "DeltaKoneB"),
+    (("paired_k10_vs_const", "B"), "DeltaConstB"),
+]
+
+for key, name in DELTAS:
+    est, lo, hi = delta[key]
+    lines.append(rf"\newcommand{{\{name}}}{{{fmt4(est)}}}")
+    lines.append(rf"\newcommand{{\{name}lo}}{{{fmt4(lo)}}}")
+    lines.append(rf"\newcommand{{\{name}hi}}{{{fmt4(hi)}}}")
+
+# Модули разностей с базовыми линиями: в тексте нужен размер проигрыша базовой линии
+for key, name in [(("paired_k10_vs_k1", "B"), "DeltaKoneBabs"),
+                  (("paired_k10_vs_const", "B"), "DeltaConstBabs")]:
+    est, _, _ = delta[key]
+    lines.append(rf"\newcommand{{\{name}}}{{{fmt4(abs(est))}}}")
+
 OUT.write_text("\n".join(lines) + "\n")
 print(f"Written {OUT} ({len(lines)} lines)")

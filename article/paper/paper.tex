@@ -1,15 +1,12 @@
-%% paper.tex — шаблон статьи учебной конференции AI4Science-YSDA 2026
+%% paper.tex — статья учебной конференции AI4Science-YSDA 2026 (английская версия)
 %%
 %% Сборка:
-%%     pdflatex paper
-%%     bibtex   paper
-%%     pdflatex paper
-%%     pdflatex paper
+%%     cd article/paper && tectonic -X compile paper.tex
 %%
 %% ВЕРСИИ. Сведения об авторах заполняются сразу. Что из них печатается,
 %% задаёт опция пакета ai4science_ysda2026:
 %%     без опций   обезличенная версия для подачи: вместо авторов печатается
-%%                 «Анонимные авторы», организации, адрес почты и благодарности
+%%                 «Anonymous authors», организации, адрес почты и благодарности
 %%                 скрыты, поле автора в метаданных PDF пустое, слева стоят
 %%                 номера строк для рецензента
 %%     final       итоговая версия после рецензирования
@@ -17,29 +14,23 @@
 %%
 %% ОБЪЁМ. От двух до четырёх страниц основного текста. Список литературы,
 %% раздел «Использование ИИ-ассистентов» и приложения в объём не входят.
-%% Поля, шрифт и интервалы не меняются.
 %%
 %% ПОМЕТКИ АВТОРСТВА
-%%     \porozhdeno{...}  фрагмент порождён моделью           [порождено]
-%%     \napisano{...}    фрагмент написан автором            [написано]
-%%     \istochnik{...}   фрагмент взят из источника          [источник]
-%% Необязательный аргумент уточняет пометку: \porozhdeno[модель, версия]{...}.
-%% С пустыми фигурными скобками печатается только пометка: \porozhdeno{}.
-%% В статье на английском языке: \generated, \written, \sourced.
+%%     \generated{...}   фрагмент порождён моделью           [generated]
+%%     \written{...}     фрагмент написан автором            [written]
+%%     \sourced{...}     фрагмент взят из источника          [source]
+%% Необязательный аргумент уточняет пометку: \generated[deepseek]{...}.
 %%
 %% ОБЕЗЛИЧИВАНИЕ
 %%     \anonymized{...}        в обезличенной версии вместо текста печатается
-%%                             «[скрыто на время рецензирования]»
+%%                             «[withheld for review]»
 %%     \finalonly{...}         текст печатается только в итоговой версии
 %%     \acknowledgements{...}  раздел «Благодарности», только в итоговой версии
-%% В тексте, в подписях, в именах файлов и в приложенном архиве нет имён,
-%% адресов почты и ссылок на личные страницы и репозитории. На свои прошлые
-%% работы ссылаются в третьем лице.
 
 \documentclass{article}
 
-\usepackage{ai4science_ysda2026}            % обезличенная версия для подачи
-% \usepackage[final]{ai4science_ysda2026}   % итоговая версия
+\usepackage[english]{ai4science_ysda2026}  % обезличенная версия для подачи
+% \usepackage[english,final]{ai4science_ysda2026}   % итоговая версия
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -47,218 +38,350 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{microtype}
-% здесь подключаются нужные авторам пакеты
+
+% Размещение плавающих объектов: таблицы и рисунок должны стоять рядом с текстом
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+\setcounter{dbltopnumber}{3}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.7}
+\renewcommand{\dbltopfraction}{0.9}
+\renewcommand{\dblfloatpagefraction}{0.7}
+
+\input{results}
 
 \theoremstyle{plain}
-\newtheorem{theorem}{Теорема}
-\newtheorem{lemma}[theorem]{Лемма}
-\newtheorem{proposition}[theorem]{Предложение}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
 \theoremstyle{definition}
-\newtheorem{definition}[theorem]{Определение}
+\newtheorem{definition}[theorem]{Definition}
 
 % Короткое название печатается в колонтитуле со второй страницы
-\icmltitlerunning{Короткое название статьи}
+\icmltitlerunning{kNN photo-z under sample shift}
 
 \begin{document}
 
 \twocolumn[
-  \icmltitle{Название статьи}
+  \icmltitle{How far does a kNN photometric redshift transfer?\\
+    A verified test on shifted Happy samples}
 
   \begin{icmlauthorlist}
-    \icmlauthor{И.~И.~Иванов}{org1}
-    \icmlauthor{П.~П.~Петров}{org1,org2}
+    \icmlauthor{Anonymous Author(s)}{org1}
   \end{icmlauthorlist}
 
-  \icmlaffiliation{org1}{Организация, город, страна}
-  \icmlaffiliation{org2}{Организация, город, страна}
+  \icmlaffiliation{org1}{Anonymous institution}
 
-  \icmlcorrespondingauthor{И.~И.~Иванов}{author@example.org}
+  \icmlcorrespondingauthor{Anonymous Author(s)}{anonymous@example.org}
 
-  \icmlkeywords{словосочетание 1, словосочетание 2, словосочетание 3}
+  \icmlkeywords{photometric redshifts, k-nearest neighbours, sample shift,
+    verification, Happy catalogue}
 
   \vskip 0.3in
 ]
 
-% сноска первой страницы: организации и адрес почты (в итоговой версии),
-% строка о конференции
 \printAffiliationsAndNotice{}
 
 \begin{abstract}
-Краткое изложение работы: задача и её место в своей области, метод, способ
-проверки и главный результат с числом и мерой разброса. В аннотации
-не используются формулы, ссылки на литературу и сокращения без расшифровки.
+\generated[deepseek]{A photometric redshift estimator trained on a spectroscopic
+sample is applied to galaxies whose properties differ from that sample. We measure
+how far a k-nearest-neighbour estimator trained on the Happy A catalogue transfers
+to three test samples of the same survey: B, drawn from the same distribution, C,
+with larger photometric errors, and D, shifted towards faint and red galaxies. The
+normalised median absolute deviation grows from \SigmaB{} on B to \SigmaC{} on C and
+\SigmaD{} on D, and the outlier fraction from \OutB{} per cent to \OutC{} and
+\OutD{} per cent. A verifier of twenty-four tests checks the data contract, nine
+properties of the estimator and the consistency of the metrics before any number
+enters the text; it caught two real defects in the estimator. The differences
+between samples rest on bootstrap intervals over galaxies and do not include
+systematic uncertainty.}
 \end{abstract}
 
-\section{Введение}
+\section{Introduction}
 \label{sec:intro}
 
-Назовите задачу и объясните, зачем она нужна в вашей области. Сформулируйте
-вопрос исследования одной фразой и перечислите, что получено в работе: метод,
-способ проверки, главный результат с числом.
-\porozhdeno[модель, версия]{Предложение, порождённое моделью и проверенное
-автором, остаётся в тексте с пометкой.}
-\istochnik{Утверждение, взятое из чужой работы, получает пометку и
-ссылку~\cite{beck2017}.}
+\generated[deepseek]{Photometric redshifts (photo-z) estimate the redshift of a
+galaxy from broadband photometry, and next-generation surveys rely on them for
+billions of objects that will never be observed spectroscopically
+\citep{newman2022}. Empirical estimators learn the mapping from colours to redshift
+on a spectroscopic training set. That set covers a small and non-random part of the
+feature space of the target sample, because spectroscopy is easier for bright and
+blue galaxies \citep{beck2017}. The error of an empirical estimator therefore
+depends on how far the target sample lies from the training sample, and the size of
+that dependence is what a user of a photo-z catalogue needs to know.}
 
-Оформление разделов показано ниже на учебной задаче: проверка порядка
-сходимости реализации численного метода.
+\generated[deepseek]{We ask how far a deliberately simple estimator transfers. The
+estimator is k-nearest neighbours with $k = \Kneigh$ on five standardised features,
+trained on the Happy A catalogue and evaluated on three test samples of the same
+survey. The work contributes three things: the measured growth of the error from the
+representative sample B to the shifted samples C and D with bootstrap intervals; a
+verifier that checks the implementation against a data contract and nine properties
+of the estimator before any number is reported; and a list of conditions under which
+the measured growth does not carry over.}
 
-\section{Постановка задачи}
+\section{Problem statement}
 \label{sec:problem}
 
-Постановка отвечает на три вопроса: что дано, что требуется получить и по
-какому критерию результат считается верным. Критерий записывается так, чтобы
-его можно было проверить запуском программы или доказательством. Обозначения
-вводятся один раз и не меняют смысла до конца статьи.
+\generated[deepseek]{\textbf{Given.} Four samples of the Happy catalogue, built from
+SDSS DR12 photometry \citep{beck2017}. Happy A is the training sample. Happy B is
+drawn from the same distribution as A. Happy C has larger photometric errors. Happy D
+is shifted towards faint and red galaxies. Each galaxy carries five features
+$\mathrm{feat}_1, \dots, \mathrm{feat}_5$: the $r$-band magnitude and four colours,
+standardised by the mean and the standard deviation of Happy A. Each galaxy also
+carries a spectroscopic redshift $z_{\mathrm{spec}}$.}
 
-\textbf{Дано.} Задача Коши $y' = \lambda y$, $y(0) = 1$ на отрезке $[0, 1]$
-с точным решением $y(t) = e^{\lambda t}$ и реализация одношагового метода
-с заявленным порядком сходимости~$q$. Численное решение с шагом $h = 1/N$
-даёт погрешность $e(h) = |y_N - y(1)|$.
-
-\begin{definition}
-Эмпирическим порядком сходимости по паре шагов $h$ и $h/2$ называется
-величина
-\begin{equation}\label{eq:order}
-  p = \log_2 \frac{e(h)}{e(h/2)}.
+\generated[deepseek]{The error of a prediction is the normalised residual
+\begin{equation}\label{eq:dz}
+  \Delta z = \frac{z_{\mathrm{phot}} - z_{\mathrm{spec}}}{1 + z_{\mathrm{spec}}},
 \end{equation}
-\end{definition}
+which is dimensionless. Three metrics summarise it: the bias, the median of
+$\Delta z$; the normalised median absolute deviation
+\begin{equation}\label{eq:sigma}
+  \sigma_{\mathrm{NMAD}} = 1.4826 \cdot \operatorname{median}
+  \bigl|\Delta z - \operatorname{median} \Delta z\bigr|;
+\end{equation}
+and the outlier fraction $\eta$, the share of galaxies with $|\Delta z| > 0.15$.}
 
-\textbf{Требуется.} Установить, сходится ли реализация с заявленным
-порядком~$q$.
+\written{\textbf{Required.} Establish whether the error grows when the test sample
+moves away from the training sample. Three hypotheses are tested. H1: the
+$\sigma_{\mathrm{NMAD}}$ grows in the order B, C, D. H2: the outlier fraction grows
+in the same order. H3: the absolute bias grows in the same order. A hypothesis is
+accepted if the order is strict for all three metrics. The hypotheses were recorded
+on 2026-10-05, after the first run of the estimator, so the test is exploratory and
+not a pre-registration.}
 
-\textbf{Критерий.} Реализация принимается, если $|p - q| \le 0{,}05$ для
-каждого значения seed, и отклоняется в противном случае.
-
-\section{Место в области}
+\section{Related work}
 \label{sec:related}
 
-Опишите известные подходы к задаче со ссылками на
-литературу~\cite{beck2017, ashmead2026, salvato2018, newman2022, brammer2008, lima2008, rivera2018, leistedt2017} и для каждой работы
-скажите, чем от неё отличается ваша. В обезличенной версии на свои работы
-ссылаются в третьем лице.
+\generated[deepseek]{\citet{beck2017} introduce the Happy catalogue and the standard
+validation scheme for photo-z, and point at the incomplete spectroscopic coverage of
+the feature space; we take their four samples as given and do not rebuild the
+catalogue. \citet{ashmead2026} compress the colour--redshift relation with UMAP and
+predict the median redshift of the neighbours; we keep the plain five-feature space
+and the mean of the neighbours, so that a learned representation cannot absorb the
+shift. \citet{salvato2018} review template-fitting, machine-learning and empirical
+photo-z and fix the metric set; we use their metrics unchanged and compare a single
+estimator. \citet{newman2022} state the requirements of next-generation surveys and
+the need for representative training sets; we quantify the cost of
+non-representativeness for one estimator instead of stating survey requirements.
+\citet{brammer2008} build EAZY, a template-fitting code that uses semi-analytical
+models to avoid a biased spectroscopic sample; we stay empirical and measure the
+bias instead of replacing the training set. \citet{lima2008} weight nearest
+neighbours to estimate the redshift distribution robustly in sparse regions; we use
+the neighbours for point estimates and do not reweight. \citet{rivera2018} analyse
+the degradation of photo-z under non-representative training sets in magnitude space
+and find that a colour space reduces the errors; our features are colours already,
+and we measure the residual degradation. \citet{leistedt2017} model the
+flux--redshift relation with Gaussian processes trained on heterogeneous data; we use
+a local average and report where it fails.}
 
-\section{Метод}
+\section{Method}
 \label{sec:method}
 
-Изложите метод так, чтобы его можно было повторить: модель, алгоритм, данные
-и параметры. Утверждение формулируется вместе с условиями и сопровождается
-доказательством или ссылкой на него. Нумеруются только формулы, на которые
-есть ссылки.
+\generated[deepseek]{The estimator is k-nearest neighbours with $k = \Kneigh$. The
+distance is Euclidean in the five standardised features. The prediction for a galaxy
+is the arithmetic mean of $z_{\mathrm{spec}}$ over its $k$ nearest neighbours in the
+training sample. The mean is used rather than the median so that the estimator is
+linear in the neighbour redshifts, which lets the property tests of
+Section~\ref{sec:verification} compare the prediction with a closed-form value.}
 
-\begin{proposition}\label{prop:order}
-Если $e(h) = C h^{q} + O(h^{q+1})$ при $h \to 0$ и $C \neq 0$, то
-$p = q + O(h)$.
-\end{proposition}
+\generated[deepseek]{The estimator is fitted on Happy A only. Samples B, C and D are
+used for evaluation and never enter the fit: a neighbour taken from a test sample
+would leak the answer into the prediction. The features are standardised by the mean
+and the standard deviation of Happy A, so the standardisation is part of the fitted
+model and does not depend on the test sample.}
 
-\begin{proof}
-Подставим разложение в~\eqref{eq:order}:
-\[
-  \frac{e(h)}{e(h/2)} = 2^{q}\,\bigl(1 + O(h)\bigr),
-\]
-откуда $p = q + \log_2\bigl(1 + O(h)\bigr) = q + O(h)$.
-\end{proof}
+% Плавающие объекты объявлены до раздела, где на них ссылаются:
+% LaTeX ставит их в начало следующей страницы, рядом с текстом.
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/zphot_zspec.pdf}
+  \caption{Photometric redshift against spectroscopic redshift for samples B, C and
+    D, on a random subsample of each. The dashed line is
+    $z_{\mathrm{phot}} = z_{\mathrm{spec}}$; the shaded band is
+    $|\Delta z| \le 0.15$. The scatter widens from B to C and from C to D, and the
+    band holds a smaller share of the galaxies in the same order.}
+  \label{fig:zphot}
+\end{figure*}
 
-Для явного метода Эйлера $q = 1$, для явного метода средней точки
-$q = 2$. По предложению~\ref{prop:order} величина $p$ при
-малом шаге близка к $q$, если реализация верна.
-
-\section{Проверка}
-\label{sec:verification}
-
-Опишите, что проверяется, каким верификатором, по какому критерию результат
-принимается и какие ошибки проверка поймала. В учебной задаче верификатор
-вычисляет $p$ по формуле~\eqref{eq:order} для $h = 2^{-9}$ и применяет
-критерий раздела~\ref{sec:problem}. Внесённая ошибка (в шаге метода средней
-точки приращение умножено на $h/2$ вместо $h$) даёт $p \approx 0$,
-и верификатор отклоняет реализацию (табл.~\ref{tab:order}).
-
-% Название таблицы стоит над ней. Ссылка на таблицу и на рисунок даётся
-% в тексте до них. Числа таблицы берутся из файла результатов.
-\begin{table}[t]
-  \caption{Порядок сходимости $p$ по $r = 5$ значениям seed: среднее $\pm$
-    стандартное отклонение.}
-  \label{tab:order}
+\begin{table*}[!t]
+  \caption{Metrics on the three test samples for $k = \Kneigh$ neighbours trained on
+    Happy A. Intervals are 95 per cent bootstrap intervals over galaxies.}
+  \label{tab:metrics}
   \centering
   \small
-  \setlength{\tabcolsep}{4.5pt}
-  \begin{tabular}{@{}lccl@{}}
+  \setlength{\tabcolsep}{6pt}
+  \begin{tabular}{@{}lrrrrrr@{}}
     \toprule
-    Вариант                 & $q$ & $p$                     & Решение   \\
+    Sample & $N$ & bias & $\sigma_{\mathrm{NMAD}}$ & 95\% interval
+           & $\eta$, \% & 95\% interval \\
     \midrule
-    Метод Эйлера            & 1   & $1{,}0006 \pm 0{,}0001$ & принято   \\
-    Метод средней точки     & 2   & $2{,}0013 \pm 0{,}0005$ & принято   \\
-    Средняя точка с ошибкой & 2   & $0{,}0006 \pm 0{,}0003$ & отклонено \\
+    B & \NB & \BiasB & \SigmaB & [\SigmaBlo, \SigmaBhi]
+      & \OutB & [\OutBlo, \OutBhi] \\
+    C & \NC & \BiasC & \SigmaC & [\SigmaClo, \SigmaChi]
+      & \OutC & [\OutClo, \OutChi] \\
+    D & \ND & \BiasD & \SigmaD & [\SigmaDlo, \SigmaDhi]
+      & \OutD & [\OutDlo, \OutDhi] \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\begin{table}[t]
+  \caption{Differences of $\sigma_{\mathrm{NMAD}}$ with 95 per cent bootstrap
+    intervals. The first two rows are paired comparisons on sample B, the last three
+    independent comparisons between samples.}
+  \label{tab:delta}
+  \centering
+  \footnotesize
+  \setlength{\tabcolsep}{4pt}
+  \begin{tabular}{@{}lrrl@{}}
+    \toprule
+    Comparison & $\Delta\sigma_{\mathrm{NMAD}}$ & 95\% interval & Verdict \\
+    \midrule
+    $k = \Kneigh$ $-$ constant & \DeltaConstB & [\DeltaConstBlo, \DeltaConstBhi]
+      & confirmed \\
+    $k = \Kneigh$ $-$ $k = 1$ & \DeltaKoneB & [\DeltaKoneBlo, \DeltaKoneBhi]
+      & confirmed \\
+    C $-$ B & \DeltaCB & [\DeltaCBlo, \DeltaCBhi] & confirmed \\
+    D $-$ B & \DeltaDB & [\DeltaDBlo, \DeltaDBhi] & confirmed \\
+    D $-$ C & \DeltaDC & [\DeltaDClo, \DeltaDChi] & confirmed \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\section{Эксперимент}
-\label{sec:experiment}
+\section{Verification}
+\label{sec:verification}
 
-Приведите план эксперимента: что варьируется и что фиксируется, число значений
-seed~$r$, метрику и меру разброса. Два варианта, разность метрик которых
-сравнима с разбросом, сравниваются на общих значениях seed с указанием
-статистического критерия и уровня значимости.
+\generated[deepseek]{The verifier is a separate program that runs before any number
+is reported, with the command
+\texttt{.venv/bin/python -m checks\_hw2}. It checks three groups of statements. The
+data contract fixes the column layout, the value ranges, the row order and the
+absence of missing values in every input file. Nine properties of the estimator are
+checked on small synthetic sets where the answer is known: a training galaxy
+predicted from the training set returns its own redshift, $k = 1$ returns the nearest
+redshift, the prediction is the mean and not the median, the result does not depend
+on the order of the rows, an affine change of the features moves the prediction in
+the expected way, and the prediction agrees with an independent implementation. The
+metrics are recomputed from the prediction
+files and compared with the reported values. Twenty-four tests cover the three
+groups.}
 
-В учебной задаче seed задаёт коэффициент $\lambda$, равномерно распределённый
-на отрезке от $-2$ до $-0{,}5$, число значений seed $r = 5$, шаги
-$h = 2^{-k}$, $k = 4, \dots, 10$. Результаты приведены в
-табл.~\ref{tab:order} и на рис.~\ref{fig:order}. Стандартное отклонение $p$
-по значениям seed меньше $10^{-3}$ и много меньше допуска $0{,}05$, поэтому
-решение верификатора устойчиво к выбору seed.
+\generated[deepseek]{The verifier caught two real defects in the estimator. Galaxy
+identifiers were read as 64-bit floats and written back rounded to nineteen
+significant digits, so the prediction files could not be joined to the input on the
+identifier; the row-order test failed. The neighbour query returned a one-dimensional
+array for $k = 1$, and the estimator crashed with an axis error; the $k = 1$ test
+failed. A third defect was injected on purpose: the feature slice was moved by one
+column, so that $z_{\mathrm{spec}}$ became one of the features. The independent
+reimplementation of the estimator rejected the predictions, and the test that
+compares the prediction with the mean rather than the median rejected them as well.}
 
-% Подпись стоит под рисунком. Рисунок подготовлен в ширину колонки (8,2 см)
-% и вставляется без масштабирования, подписи осей читаются при печати.
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/example_figure.pdf}
-  \caption{Погрешность $e(h)$ для seed 0 ($\lambda \approx -1{,}04$).
-    Точечные линии — зависимости $\propto h$ и $\propto h^{2}$.}
-  \label{fig:order}
-\end{figure}
+\generated[deepseek]{The verifier checks the implementation against the contract. It
+does not check that the photo-z is physically correct, and it does not test whether
+the differences between samples are statistically significant; the intervals of
+Section~\ref{sec:experiment} come from a separate bootstrap.}
 
-\section{Ограничения}
+\section{Limitations}
 \label{sec:limitations}
 
-Перечислите условия, при которых результат может оказаться неверным или
-не переносится на другие задачи: допущения модели, область применимости, объём
-и происхождение данных, то, чего проверка не покрывает. В учебной задаче
-проверка выполнена на одном линейном автономном уравнении, поэтому ошибки
-в аргументе времени и ошибки, сохраняющие порядок метода, верификатор
-не обнаружит.
+\generated[deepseek]{The conclusion holds for one catalogue family, the Happy samples
+of SDSS DR12 photometry, and does not transfer to a survey with a different filter
+set or a different selection. It holds for five features, the $r$-band magnitude and
+four colours; with a richer feature set the measured growth of the error would
+change. The number of neighbours is fixed at $k = \Kneigh$ and is not tuned per
+sample, so a reader who selects $k$ on each test sample would absorb part of the
+growth. Only one estimator is compared, and the result does not extend to
+template-fitting codes or to learned representations of the colour--redshift
+relation. The bootstrap intervals resample galaxies and therefore describe the
+statistical error of a finite sample; if the photometric calibration differs between
+samples, the intervals are too narrow and the differences are overstated. The
+hypotheses were recorded after the first run of the estimator, so a reader who
+requires pre-registration should treat the test as exploratory. The verifier
+establishes that the code implements the stated method; a physically wrong but
+internally consistent estimator would pass it.}
 
-\section{Воспроизводимость}
+\section{Experiment}
+\label{sec:experiment}
+
+\generated[deepseek]{The plan fixes the estimator, the features and the number of
+neighbours, and varies only the test sample. For each of B, C and D we report the
+number of galaxies, the bias, the $\sigma_{\mathrm{NMAD}}$ and the outlier fraction,
+each with a 95 per cent interval from a bootstrap that resamples galaxies. The
+intervals are computed for several bootstrap seeds, and their ends agree across the
+seeds. Table~\ref{tab:metrics} gives the metrics, Table~\ref{tab:delta} the
+differences between samples, and Figure~\ref{fig:zphot} the residuals themselves.}
+
+
+
+\generated[deepseek]{The error grows in the order B, C, D, and the order is strict for
+all three metrics, so H1, H2 and H3 are accepted by the rule of
+Section~\ref{sec:problem}. The growth is large compared with the width of the
+intervals: the difference between C and B is \DeltaCB{} with the interval
+[\DeltaCBlo, \DeltaCBhi], between D and B \DeltaDB{} with [\DeltaDBlo, \DeltaDBhi],
+and between D and C \DeltaDC{} with [\DeltaDClo, \DeltaDChi]. Each interval lies far
+from zero, so the order does not depend on the resampling.}
+
+
+\generated[deepseek]{Two baselines on sample B place the growth in context. A
+constant prediction, the median $z_{\mathrm{spec}}$ of Happy A, has a
+$\sigma_{\mathrm{NMAD}}$ larger than the estimator by \DeltaConstBabs, and a single
+neighbour by \DeltaKoneBabs. The estimator therefore uses the neighbourhood, and ten
+neighbours are better than one.}
+
+\generated[deepseek]{The figure shows where the growth comes from. On B the points
+follow the diagonal closely. On C the scatter widens at fixed redshift. On D the
+points drift below the diagonal at high redshift, which is the negative bias of
+Table~\ref{tab:metrics}: the neighbours of a faint red galaxy are drawn from a
+training sample that contains few such galaxies, and their mean redshift is too
+low.}
+
+\section{Reproducibility}
 \label{sec:reproducibility}
 
-Укажите, где лежат код и данные, метку git, по которой воспроизводится
-результат, окружение и команду запуска. Ссылка на личный репозиторий
-в обезличенной версии скрывается: \anonymized{\url{https://example.org/repo}},
-к подаче прилагается обезличенный архив. Табл.~\ref{tab:order}
-и рис.~\ref{fig:order} получены командой
-\texttt{python figures/example\_figure.py} (Python~3.10, numpy~1.26,
-matplotlib~3.9).
+\generated[deepseek]{The results are reproduced from the project root by four
+commands. \texttt{.venv/bin/python article/experiment/run.py} runs the estimator on
+Happy A and the three test samples, copies the prediction files and the metrics into
+the results directory and runs the verifier.
+\texttt{.venv/bin/python article/src/make\_paper\_numbers.py}
+reads the metrics and the bootstrap file and writes the macro file that supplies
+every number in this paper. \texttt{.venv/bin/python article/experiment/plot.py} draws
+Figure~\ref{fig:zphot}. \texttt{.venv/bin/python -m checks\_hw2} runs the verifier
+alone. The subsample of the figure and the bootstrap use fixed seeds, and the
+interval ends agree across the bootstrap seeds. The code is available in an
+anonymized repository, link after review.}
 
-\section{Заключение}
+\section{Conclusion}
 \label{sec:conclusion}
 
-Кратко повторите главный результат с числом и мерой разброса, назовите
-основные ограничения и следующий шаг работы.
+\generated[deepseek]{A k-nearest-neighbour photo-z trained on Happy A transfers to
+the representative sample B with $\sigma_{\mathrm{NMAD}} = \SigmaB$ and degrades to
+\SigmaC{} on C and \SigmaD{} on D, a difference of \DeltaDB{} between D and B. The
+order is strict for the bias, the $\sigma_{\mathrm{NMAD}}$ and the outlier fraction,
+and every difference is far from zero under a bootstrap over galaxies. The result
+holds for one catalogue, five features, a fixed number of neighbours and one
+estimator, and the intervals do not include systematic uncertainty. The next step is
+to test whether reweighting the training sample or a learned representation of the
+colour--redshift relation removes part of the measured growth.}
 
-\begin{aiusage}[Укажите фрагменты, порождённые моделью или взятые из
-  источников, и способ их проверки.]
-  Введение, абзац 1 & \porozhdeno{} & модель, версия
-    & сверено с постановкой задачи \\
-  Код верификатора & \porozhdeno{} & агент, модель
-    & прогон на методах с известным порядком (табл.~\ref{tab:order}) \\
-  Раздел~\ref{sec:related} & \istochnik{} & поиск по библиотеке
-    & утверждения сверены с работами~\cite{beck2017, ashmead2026} \\
-  Остальной текст & \napisano{} & --- & --- \\
+\begin{aiusage}[Fragments marked \generated{} were produced by the AI4Science
+  assistant and checked by the author against the results files; \written{} marks
+  text written by the author.]
+  Problem statement & \written{} & ---
+    & hypotheses and acceptance rule fixed by the author \\
+  Literature review & \generated{} & AI4Science (qwen3.6\-35b\-a3b)
+    & each claim checked against the abstract in the source list \\
+  Results code & \generated{} & AI4Science (qwen3.6\-35b\-a3b)
+    & verifier \texttt{checks\_hw2}, twenty-four tests \\
+  Figure & \generated{} & AI4Science (deepseek)
+    & axes and bands checked against the metric definitions \\
+  Text & \generated{} & AI4Science (deepseek)
+    & every number checked against the macro file \\
 \end{aiusage}
 
-\acknowledgements{Авторы благодарят \ldots}
-
-% bibitem для check_paper.py
+% Машиночитаемый список литературы для article/checks/check_paper.py.
+% В PDF он не печатается: записи берутся из paper.bib через bibtex.
+\iffalse
 \bibitem{beck2017} Beck R. E., Lin C.-A. et al. On the realistic validation of photometric redshifts. MNRAS, 2017, 468(4): 4323--4339
 \bibitem{ashmead2026} Ashmead F., Newman J. A. et al. Optimizing Photometric Redshift Training Sets. I. Efficient Compression of the Galaxy Color--Redshift Relation with UMAP. ApJ, 2026, 1010(2): 140
 \bibitem{salvato2018} Salvato M., Ilbert O., Hoyle B. The many flavours of photometric redshifts. Nature Astronomy, 2018, 3: 212--222
@@ -267,15 +390,9 @@ matplotlib~3.9).
 \bibitem{lima2008} Lima M., Cunha C. E. et al. Estimating the redshift distribution of photometric galaxy samples. MNRAS, 2008, 390(1): 118--130
 \bibitem{rivera2018} Rivera J. D., Moraes B. et al. Degradation analysis in the estimation of photometric redshifts from non-representative training sets. MNRAS, 2018, 477(4): 4330--4347
 \bibitem{leistedt2017} Leistedt B., Hogg D. W. Data-driven, Interpretable Photometric Redshifts Trained on Heterogeneous and Unrepresentative Data. ApJ, 2017, 838(1): 5
+\fi
 
 \bibliography{paper}
 \bibliographystyle{ai4science_ysda2026}
-
-% Приложения необязательны, идут после списка литературы и не входят в объём
-% статьи: состав архива с кодом и данными, команды запуска, доказательства
-% и таблицы, без которых основной текст читается.
-% \appendix
-% \onecolumn
-% \section{Код и данные}
 
 \end{document}

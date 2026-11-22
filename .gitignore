@@ -5,3 +5,7 @@ __pycache__/
 .DS_Store
 .ipynb_checkpoints/
 .obsidian/workspace*.json
+
+# Сборка статьи (tectonic)
+article/paper/*.log
+article/paper/*.blg
