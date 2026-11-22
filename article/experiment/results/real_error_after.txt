@@ -1,0 +1,67 @@
+=== Запуск src/photoz.py ===
+src/photoz.py OK
+
+=== контракт: test_data_contract.py ===
+  PASS: заголовок
+  PASS: число строк
+  PASS: число столбцов
+  PASS: id — 18–19 цифр
+  INFO: A повторных id: 0
+  INFO: B повторных id: 0
+  INFO: C повторных id: 1
+  INFO: D повторных id: 1
+  PASS: повтор id допустим
+  PASS: нет NaN и inf
+  INFO: A mag_r=[10.7133,27.9293] u-g=[-7.8834,16.4220] g-r=[-10.5016,11.0176] r-i=[-7.4699,10.7678] i-z=[-15.8161,12.4310] feat1=[-4.8646,5.3452] feat2=[-8.6158,12.9182] feat3=[-22.6149,18.5444] feat4=[-25.0072,30.9142] feat5=[-66.1694,49.3829]
+  INFO: B mag_r=[9.8062,27.5865] u-g=[-5.9688,10.8785] g-r=[-7.1856,10.3343] r-i=[-12.4841,11.2626] i-z=[-12.2586,13.1825] feat1=[-5.4026,5.1419] feat2=[-6.9195,8.0068] feat3=[-16.2724,17.2375] feat4=[-40.3823,32.4316] feat5=[-51.6167,52.4569]
+  INFO: C mag_r=[13.9238,22.6825] u-g=[-4.4339,10.2887] g-r=[-1.4776,5.5323] r-i=[-12.1547,3.1097] i-z=[-10.6564,12.9584] feat1=[-2.9606,2.2337] feat2=[-5.5596,7.4843] feat3=[-5.3549,8.0528] feat4=[-39.3720,7.4325] feat5=[-45.0625,51.5402]
+  INFO: D mag_r=[8.5103,30.4811] u-g=[-14.8903,13.1777] g-r=[-4.2068,15.3927] r-i=[-15.9660,14.8846] i-z=[-12.2576,14.5728] feat1=[-6.1711,6.8586] feat2=[-14.8238,10.0438] feat3=[-10.5750,26.9125] feat4=[-51.0586,43.5374] feat5=[-51.6128,58.1442]
+  PASS: min/max info
+  PASS: z_spec ∈ [0, 5]
+  PASS: A ∩ B,C,D = 0
+  INFO: C ∩ D = 19334 общих id
+  PASS: C ∩ D
+
+10 passed, 0 failed
+
+
+=== свойства: test_photoz_properties.py ===
+  PASS: test_predictions_in_range
+  PASS: test_predictions_match_independent_knn
+  PASS: test_z_spec_range
+  PASS: test_knn_is_mean_not_median
+  PASS: test_row_order_preserved
+  PASS: test_row_count_matches
+  INFO: feat1: a=0.593042, b=-11.218036, mu=18.916087, sigma=1.686221
+  INFO: feat2: a=0.885978, b=-1.631304, mu=1.841246, sigma=1.128696
+  INFO: feat3: a=1.912674, b=-2.528692, mu=1.322072, sigma=0.522828
+  INFO: feat4: a=3.066265, b=-2.102624, mu=0.685728, sigma=0.326130
+  INFO: feat5: a=4.090769, b=-1.469613, mu=0.359251, sigma=0.244453
+  PASS: test_features_affine
+  INFO: self_prediction_k1: исключено 0 строк с d[:,1]==0
+  PASS: test_self_prediction_k1
+  PASS: test_invariance
+
+9 passed, 0 failed
+
+
+=== метрики: test_metrics_consistency.py ===
+  PASS: метрики совпадают с predictions
+  INFO: B sigma_nmad = 0.021616
+  INFO: C sigma_nmad = 0.052942
+  INFO: D sigma_nmad = 0.083006
+  PASS: sigma_nmad info
+  INFO: B bias = 0.000403
+  INFO: C bias = 0.002844
+  INFO: D bias = -0.011154
+  PASS: bias info
+  PASS: outlier_frac согласован
+  PASS: n и k совпадают
+
+5 passed, 0 failed
+
+
+контракт: 0, свойства: 0, метрики: 0 — ПРИНЯТО
+real 16.69
+user 15.84
+sys 0.68

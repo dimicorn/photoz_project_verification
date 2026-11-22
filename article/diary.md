@@ -29,3 +29,11 @@
 - Проверено: check_paper.py — см. ниже.
 - Итог: ожидает проверки.
 
+
+## 2026-11-22 — результаты и рисунок
+
+- Создан `article/experiment/run.py`: запускает `src/photoz.py`, копирует результаты в `article/experiment/results/`, запускает `checks_hw2`, сохраняет `verifier.txt` (rc=0).
+- Создан `article/src/make_paper_numbers.py`: читает `results/metrics.csv` и `results/uncertainty.csv`, пишет `article/paper/results.tex` с `\newcommand` для всех метрик и доверительных интервалов.
+- Создан `article/experiment/plot.py`: matplotlib, 3 панели z_phot vs z_spec для B,C,D (hist2d scatter, 20000 точек, seed=0), линия y=x, полосы ±0.15(1+z). Сохранён в `article/paper/figures/zphot_zspec.pdf`.
+- Проверка: `git diff --stat results/` — только `run_log.md` (не metrics.csv), metrics.csv совпадает с git.
+- `checks_hw2` — rc=0.
