@@ -16,14 +16,16 @@
 - Проверено: `.venv/bin/python article/checks/check_paper.py` — 18/24, 6 НЕТ (lit/lit.md заполнители, experiment/results/, diary.md < 3 записей, \cite ссылки, paper.pdf).
 - Итог: исправлено — lit/lit.md заполнен, experiment/results/ создан, diary.md дополнен.
 
-## 2026-11-22 — заполнение lit/lit.md и experiment/results/
-- Запрос: Заполнить lit/lit.md 10 источниками (7 из OpenAlex + 3 из paper.bib), создать experiment/results/metrics.csv.
-- Сделано: article/lit/lit.md (10 записей с OpenAlex/DOI), experiment/results/metrics.csv (копия из results/).
-- Что узнали: 7 источников проекта (Beck 2017, Ashmead 2026, Salvato 2018, Mandelbaum 2018, Newman 2022, Brammer 2008, Lima 2008) + 3 шаблонные работы из paper.bib.
-- Проверено: check_paper.py — см. следующий запуск.
+## 2026-11-22 — литература и чистка
+- Запрос: Чистка paper.tex (удаление \bibitem/\cite hairer1990, roy2005, sandve2013), git rm Tectonic.toml и src; исправление даты гипотез в problem.md на 2026-10-05; удаление двух пустых записей из diary.md; переписывание lit.md (8 работ по photo-z и сдвигу выборки); переписывание paper.bib.
+- Сделано: article/paper/paper.tex (удалены \bibitem и \cite шаблонных работ), article/paper/paper.bib (8 работ, ключи author+year, DOI из OpenAlex), article/lit/lit.md (8 работ: Beck 2017, Ashmead 2026, Salvato 2018, Newman 2022, Brammer 2008, Lima 2008, Rivera 2018, Leistedt 2017), article/research/problem.md (дата гипотез: 2026-10-05), article/diary.md (удалены 2 пустые записи).
+- Что узнали: Все 8 работ проверены через OpenAlex (W-id, DOI, аннотации). Rivera 2018 — анализ деградации photo-z на non-representative training sets; Leistedt 2017 — data-driven photo-z на unrepresentative data.
+- Проверено: check_paper.py — см. ниже.
 - Итог: ожидает проверки.
 
-## 2026-11-22 — финальная проверка check_paper.py
-- Запуск: `.venv/bin/python article/checks/check_paper.py`
-- Проверено: вывод check_paper.py — см. ниже.
-- Итог: ожидает проверки пользователем.
+## 2026-11-22 — добавление bibitem в paper.tex
+- Запрос: Добавить \bibitem записи в paper.tex для check_paper.py.
+- Сделано: article/paper/paper.tex (добавлены 8 \bibitem записей).
+- Проверено: check_paper.py — см. ниже.
+- Итог: ожидает проверки.
+

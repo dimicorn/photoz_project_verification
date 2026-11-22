@@ -1,38 +1,97 @@
-% Список литературы к шаблону статьи AI4Science-YSDA 2026.
-%
-% Каждая запись сверяется с первоисточником: авторы, название, год, том,
-% страницы, DOI. Записи, порождённые моделью, проверяются по странице издателя
-% или по записи OpenAlex.
-%
-% Работа на русском языке: список авторов берётся в двойные фигурные скобки,
-% тогда bibtex печатает его без изменений и без английского союза «and».
+% Список литературы к статье: kNN photo-z under sample shift.
+% Ключи: author+year. DOI проверен через OpenAlex, 2026-11-22.
 
-@book{hairer1990,
-  author    = {{Хайрер Э., Нерсетт С., Ваннер Г.}},
-  title     = {Решение обыкновенных дифференциальных уравнений. Нежесткие задачи},
-  publisher = {Мир},
-  address   = {Москва},
-  year      = {1990}
+@article{beck2017,
+  author  = {Beck, Robert E. and Lin, Chieh-An and Ishida, {\'E}mille E. O. and
+             Gieseke, Fabian Cristian and de Souza, Rafael S. and
+             Costa-Duarte, M. V. and Hattab, Mohammad Wasef and Krone-Martins, A.},
+  title   = {On the realistic validation of photometric redshifts},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume  = {468},
+  number  = {4},
+  pages   = {4323--4339},
+  year    = {2017},
+  doi     = {10.1093/mnras/stx687}
 }
 
-@article{roy2005,
-  author  = {Roy, Christopher J.},
-  title   = {Review of code and solution verification procedures for computational simulation},
-  journal = {Journal of Computational Physics},
-  volume  = {205},
+@article{ashmead2026,
+  author  = {Ashmead, Finian and Newman, Jeffrey A. and Andrews, Brett H. and
+             Bezanson, Rachel and Dey, Biprateep and Masters, Daniel C. and
+             Stanford, Spencer A},
+  title   = {Optimizing Photometric Redshift Training Sets. {I}. Efficient Compression
+             of the Galaxy Color--Redshift Relation with {UMAP}},
+  journal = {The Astrophysical Journal},
+  volume  = {1010},
+  number  = {2},
+  pages   = {140},
+  year    = {2026},
+  doi     = {10.3847/1538-4357/aea207}
+}
+
+@article{salvato2018,
+  author  = {Salvato, Mara and Ilbert, Olivier and Hoyle, Ben},
+  title   = {The many flavours of photometric redshifts},
+  journal = {Nature Astronomy},
+  volume  = {3},
+  pages   = {212--222},
+  year    = {2018},
+  doi     = {10.1038/s41550-018-0478-0}
+}
+
+@article{newman2022,
+  author  = {Newman, Jeffrey A. and Gruen, Daniel},
+  title   = {Photometric Redshifts for Next-Generation Surveys},
+  journal = {Annual Review of Astronomy and Astrophysics},
+  volume  = {60},
+  pages   = {363--414},
+  year    = {2022},
+  doi     = {10.1146/annurev-astro-032122-014611}
+}
+
+@article{brammer2008,
+  author  = {Brammer, Gabriel B. and van Dokkum, Pieter G. and Coppi, P.},
+  title   = {{EAZY}: A Fast, Public Photometric Redshift Code},
+  journal = {The Astrophysical Journal},
+  volume  = {686},
+  number  = {2},
+  pages   = {1503--1513},
+  year    = {2008},
+  doi     = {10.1086/591786}
+}
+
+@article{lima2008,
+  author  = {Lima, M. and Cunha, Carlos E. and Oyaizu, Hiroaki and Frieman, Joshua A.
+             and Lin, Huan and Sheldon, Erin Scott},
+  title   = {Estimating the redshift distribution of photometric galaxy samples},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume  = {390},
   number  = {1},
-  pages   = {131--156},
-  year    = {2005},
-  doi     = {10.1016/j.jcp.2004.10.036}
+  pages   = {118--130},
+  year    = {2008},
+  doi     = {10.1111/j.1365-2966.2008.13510.x}
 }
 
-@article{sandve2013,
-  author  = {Sandve, Geir Kjetil and Nekrutenko, Anton and Taylor, James and Hovig, Eivind},
-  title   = {Ten simple rules for reproducible computational research},
-  journal = {PLoS Computational Biology},
-  volume  = {9},
-  number  = {10},
-  pages   = {e1003285},
-  year    = {2013},
-  doi     = {10.1371/journal.pcbi.1003285}
+@article{rivera2018,
+  author  = {Rivera, Jos{\'e} D. and Moraes, Bruno and Merson, Alexander I. and
+             Jouvel, S. and Abdalla, Filipe Batoni and Abdalla, M. C. B.},
+  title   = {Degradation analysis in the estimation of photometric redshifts from
+             non-representative training sets},
+  journal = {Monthly Notices of the Royal Astronomical Society},
+  volume  = {477},
+  number  = {4},
+  pages   = {4330--4347},
+  year    = {2018},
+  doi     = {10.1093/mnras/sty880}
+}
+
+@article{leistedt2017,
+  author  = {Leistedt, Boris and Hogg, David W.},
+  title   = {Data-driven, Interpretable Photometric Redshifts Trained on Heterogeneous
+             and Unrepresentative Data},
+  journal = {The Astrophysical Journal},
+  volume  = {838},
+  number  = {1},
+  pages   = {5},
+  year    = {2017},
+  doi     = {10.3847/1538-4357/aa6332}
 }

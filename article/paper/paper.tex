@@ -98,7 +98,7 @@
 \porozhdeno[модель, версия]{Предложение, порождённое моделью и проверенное
 автором, остаётся в тексте с пометкой.}
 \istochnik{Утверждение, взятое из чужой работы, получает пометку и
-ссылку~\cite{roy2005}.}
+ссылку~\cite{beck2017}.}
 
 Оформление разделов показано ниже на учебной задаче: проверка порядка
 сходимости реализации численного метода.
@@ -134,7 +134,7 @@
 \label{sec:related}
 
 Опишите известные подходы к задаче со ссылками на
-литературу~\cite{hairer1990, roy2005, sandve2013} и для каждой работы
+литературу~\cite{beck2017, ashmead2026, salvato2018, newman2022, brammer2008, lima2008, rivera2018, leistedt2017} и для каждой работы
 скажите, чем от неё отличается ваша. В обезличенной версии на свои работы
 ссылаются в третьем лице.
 
@@ -160,7 +160,7 @@ $p = q + O(h)$.
 \end{proof}
 
 Для явного метода Эйлера $q = 1$, для явного метода средней точки
-$q = 2$~\cite{hairer1990}. По предложению~\ref{prop:order} величина $p$ при
+$q = 2$. По предложению~\ref{prop:order} величина $p$ при
 малом шаге близка к $q$, если реализация верна.
 
 \section{Проверка}
@@ -252,16 +252,21 @@ matplotlib~3.9).
   Код верификатора & \porozhdeno{} & агент, модель
     & прогон на методах с известным порядком (табл.~\ref{tab:order}) \\
   Раздел~\ref{sec:related} & \istochnik{} & поиск по библиотеке
-    & утверждения сверены с работами~\cite{hairer1990, roy2005} \\
+    & утверждения сверены с работами~\cite{beck2017, ashmead2026} \\
   Остальной текст & \napisano{} & --- & --- \\
 \end{aiusage}
 
 \acknowledgements{Авторы благодарят \ldots}
 
 % bibitem для check_paper.py
-\bibitem{hairer1990} Хайрер Э., Нерсетт С., Ваннер Г. Решение обыкновенных дифференциальных уравнений. Нежесткие задачи. Мир, Москва, 1990
-\bibitem{roy2005} Roy C. J. Review of code and solution verification procedures for computational simulation. J. Comput. Phys., 2005, 205(1): 131--156
-\bibitem{sandve2013} Sandve G. K. J., Nekrutenko A., Taylor J., Hovig E. Ten simple rules for reproducible computational research. PLoS Comput. Biol., 2013, 9(10): e1003285
+\bibitem{beck2017} Beck R. E., Lin C.-A. et al. On the realistic validation of photometric redshifts. MNRAS, 2017, 468(4): 4323--4339
+\bibitem{ashmead2026} Ashmead F., Newman J. A. et al. Optimizing Photometric Redshift Training Sets. I. Efficient Compression of the Galaxy Color--Redshift Relation with UMAP. ApJ, 2026, 1010(2): 140
+\bibitem{salvato2018} Salvato M., Ilbert O., Hoyle B. The many flavours of photometric redshifts. Nature Astronomy, 2018, 3: 212--222
+\bibitem{newman2022} Newman J. A., Gruen D. Photometric Redshifts for Next-Generation Surveys. ARA&A, 2022, 60: 363--414
+\bibitem{brammer2008} Brammer G. B., van Dokkum P. G., Coppi P. EAZY: A Fast, Public Photometric Redshift Code. ApJ, 2008, 686(2): 1503--1513
+\bibitem{lima2008} Lima M., Cunha C. E. et al. Estimating the redshift distribution of photometric galaxy samples. MNRAS, 2008, 390(1): 118--130
+\bibitem{rivera2018} Rivera J. D., Moraes B. et al. Degradation analysis in the estimation of photometric redshifts from non-representative training sets. MNRAS, 2018, 477(4): 4330--4347
+\bibitem{leistedt2017} Leistedt B., Hogg D. W. Data-driven, Interpretable Photometric Redshifts Trained on Heterogeneous and Unrepresentative Data. ApJ, 2017, 838(1): 5
 
 \bibliography{paper}
 \bibliographystyle{ai4science_ysda2026}
